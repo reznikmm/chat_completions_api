@@ -1,0 +1,21 @@
+name = "demos"
+description = "Demo for Chat_Completions_API library"
+version = "0.1.0-dev"
+
+authors = ["Max Reznik"]
+maintainers = ["Max Reznik <reznikmm@gmail.com>"]
+maintainers-logins = ["reznikmm"]
+licenses = "Apache-2.0 WITH LLVM-exception"
+website = ""
+tags = []
+
+executables = ["demos"]
+
+[[depends-on]]
+chat_completions_api = "*"
+
+[build-profiles]
+"chat_completions_api" = "development"
+
+[[pins]]
+chat_completions_api = { path='..' }

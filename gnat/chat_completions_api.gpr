@@ -1,0 +1,34 @@
+--  SPDX-FileCopyrightText: 2026 Max Reznik <reznikmm@gmail.com>
+--
+--  SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+------------------------------------------------------------------
+
+with "../config/chat_completions_api_config.gpr";
+project Chat_Completions_API is
+
+   for Library_Name use "chat_completions_api";
+   for Library_Version use Project'Library_Name & ".so." & Chat_Completions_API_Config.Crate_Version;
+
+   for Source_Dirs use ("../source", "../source/generated", "../config");
+   for Object_Dir use "../obj/" & Chat_Completions_API_Config.Build_Profile;
+   for Create_Missing_Dirs use "True";
+   for Library_Dir use "../lib";
+
+   type Library_Type_Type is ("relocatable", "static", "static-pic");
+   Library_Type : Library_Type_Type :=
+     external ("CHAT_COMPLETIONS_API_LIBRARY_TYPE", external ("LIBRARY_TYPE", "static"));
+   for Library_Kind use Library_Type;
+
+   package Compiler is
+      for Default_Switches ("Ada") use Chat_Completions_API_Config.Ada_Compiler_Switches;
+   end Compiler;
+
+   package Binder is
+      for Switches ("Ada") use ("-Es"); --  Symbolic traceback
+   end Binder;
+
+   package Install is
+      for Artifacts (".") use ("share");
+   end Install;
+
+end Chat_Completions_API;

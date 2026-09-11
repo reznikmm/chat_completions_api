@@ -1,0 +1,25 @@
+name = "chat_completions_api"
+description = "OpenAI-compatible Chat Completions API client library in Ada"
+version = "0.1.0-dev"
+
+authors = ["Max Reznik"]
+maintainers = ["Max Reznik <reznikmm@gmail.com>"]
+maintainers-logins = ["reznikmm"]
+licenses = "Apache-2.0 WITH LLVM-exception"
+website = "https://github.com/reznikmm/chat_completions_api"
+tags = ["openai", "llama-cpp", "ai", "json"]
+
+project-files = ["gnat/chat_completions_api.gpr"]
+
+[build-switches]
+development.optimization = ["-O0"]
+development.style_checks = ["-gnaty", "-gnaty-B"]
+development.contracts = "Yes"
+"*".debug_info = "Yes"
+
+[[actions]]
+type = "test"
+command = ["alr", "-C" , "testsuite", "run"]
+
+[[depends-on]]
+vss_extra = "^26.0.0"
