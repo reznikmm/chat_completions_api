@@ -300,6 +300,9 @@ package Chat_Completions_API.Types is
       --  See the [Streaming section below](/docs/api-reference/chat/streaming)
       --  for more information, along with the [streaming responses](/docs/guides/streaming-responses)
       --  guide for more information on how to handle the streaming events.
+      stop                  : VSS.String_Vectors.Virtual_String_Vector;
+      --  Up to 4 sequences where the API will stop generating further tokens. The
+      --  returned text will not contain the stop sequence.
       logprobs              : Boolean := Boolean'First;
       --  Whether to return log probabilities of the output tokens or not. If true,
       --  returns the log probabilities of each output token returned in the

@@ -707,6 +707,7 @@ package body Chat_Completions_API.Types.Inputs is
          "top_logprobs",
          "response_format",
          "stream",
+         "stop",
          "logprobs",
          "n",
          "seed",
@@ -958,6 +959,41 @@ package body Chat_Completions_API.Types.Inputs is
                      end if;
 
                   when 12     =>
+                     --  stop
+                     Reader.Read_Next;
+                     if Reader.Is_Null_Value then
+                        Reader.Read_Next;
+                     else
+                        if Success and Reader.Is_Start_Array then
+                           Reader.Read_Next;
+                           Value.stop.Clear;
+                           while Success and not Reader.Is_End_Array loop
+                              declare
+                                 Item : VSS.Strings.Virtual_String;
+                              begin
+                                 if Reader.Is_Null_Value then
+                                    Reader.Read_Next;
+                                 else
+                                    if Reader.Is_String_Value then
+                                       Item := Reader.String_Value;
+                                       Reader.Read_Next;
+                                    else
+                                       Success := False;
+                                    end if;
+                                 end if;
+                                 Value.stop.Append (Item);
+                              end;
+                           end loop;
+                           if Success then
+                              Reader.Read_Next;  --  skip End_Array
+
+                           end if;
+                        else
+                           Success := False;
+                        end if;
+                     end if;
+
+                  when 13     =>
                      --  logprobs
                      Reader.Read_Next;
                      if Reader.Is_Null_Value then
@@ -971,7 +1007,7 @@ package body Chat_Completions_API.Types.Inputs is
                         end if;
                      end if;
 
-                  when 13     =>
+                  when 14     =>
                      --  n
                      Reader.Read_Next;
                      Value.n := (Is_Set => True, Value => <>);
@@ -989,7 +1025,7 @@ package body Chat_Completions_API.Types.Inputs is
                         end if;
                      end if;
 
-                  when 14     =>
+                  when 15     =>
                      --  seed
                      Reader.Read_Next;
                      Value.seed := (Is_Set => True, Value => <>);
@@ -1008,7 +1044,7 @@ package body Chat_Completions_API.Types.Inputs is
                         end if;
                      end if;
 
-                  when 15     =>
+                  when 16     =>
                      --  tools
                      Reader.Read_Next;
                      if Reader.Is_Null_Value then
@@ -1039,7 +1075,7 @@ package body Chat_Completions_API.Types.Inputs is
                         end if;
                      end if;
 
-                  when 16     =>
+                  when 17     =>
                      --  tool_choice
                      Reader.Read_Next;
                      Value.tool_choice := (Is_Set => True, Value => <>);
@@ -1050,7 +1086,7 @@ package body Chat_Completions_API.Types.Inputs is
                           (Reader, Value.tool_choice.Value, Success);
                      end if;
 
-                  when 17     =>
+                  when 18     =>
                      --  parallel_tool_calls
                      Reader.Read_Next;
                      if Reader.Is_Null_Value then

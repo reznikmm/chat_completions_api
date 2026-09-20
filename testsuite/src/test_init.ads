@@ -8,4 +8,6 @@ package Test_Init is
 
    procedure Test_Basic_Init (Op : in out Trendy_Test.Operation'Class);
 
+   procedure Test_Stop_Field (Op : in out Trendy_Test.Operation'Class);
+
 end Test_Init;

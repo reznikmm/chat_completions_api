@@ -32,6 +32,8 @@ package body Chat_Completions_API.Chats is
         (Is_Set => False);
       Presence_Penalty      : Chat_Completions_API.Types.Optional_Float_64 :=
         (Is_Set => False);
+      Stop                  : VSS.String_Vectors.Virtual_String_Vector :=
+        VSS.String_Vectors.Empty_Virtual_String_Vector;
       Response_Format       :
         Chat_Completions_API
           .Types
@@ -59,6 +61,7 @@ package body Chat_Completions_API.Chats is
             seed                  => Seed,
             frequency_penalty     => Frequency_Penalty,
             presence_penalty      => Presence_Penalty,
+            stop                  => Stop,
             response_format       => Response_Format,
             stream                => False,
             logprobs              => Logprobs,

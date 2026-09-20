@@ -14,6 +14,10 @@
 ##    prediction, reasoning_effort, logit_bias, store, stream_options,
 ##    service_tier, metadata, max_tokens (superseded by
 ##    max_completion_tokens).
+##  * "stop" is simplified from its upstream oneOf(string, array of string)
+##    shape to a plain array of strings -- the generator can't discriminate
+##    a bare-scalar/array union, and an array covers the common case (a
+##    single stop sequence is just a one-element array).
 ##  * response message drops annotations, function_call and audio.
 ##  * streaming (stream: true / SSE) is out of scope for now.
 
@@ -50,8 +54,8 @@ def closure(roots; all_schemas):
   | .CreateChatCompletionRequest.allOf[1].properties |=
       with_entries(select(.key |
         IN("messages", "model", "max_completion_tokens", "frequency_penalty",
-           "presence_penalty", "top_logprobs", "response_format", "stream",
-           "logprobs", "n", "seed", "tools", "tool_choice",
+           "presence_penalty", "stop", "top_logprobs", "response_format",
+           "stream", "logprobs", "n", "seed", "tools", "tool_choice",
            "parallel_tool_calls")))
   | .CreateChatCompletionRequest.allOf[1].properties.model = plain_string
 
@@ -60,6 +64,17 @@ def closure(roots; all_schemas):
   # it instead.
   | .CreateChatCompletionRequest.allOf[1].properties.parallel_tool_calls =
       {type: "boolean"}
+
+  # "stop" is a $ref to StopConfiguration upstream, a oneOf(bare string,
+  # array of string) the generator can't discriminate (same class of
+  # problem as tool_choice above). Inline it as a plain array of strings
+  # instead -- a single stop sequence is just a one-element array.
+  | .CreateChatCompletionRequest.allOf[1].properties.stop = {
+      type: "array",
+      items: plain_string,
+      maxItems: 4,
+      description: "Up to 4 sequences where the API will stop generating further tokens. The\nreturned text will not contain the stop sequence.\n"
+    }
 
   # ModelResponseProperties: keep temperature/top_p/user only
   | .ModelResponseProperties.properties |=

@@ -6,6 +6,7 @@
 pragma Ada_2022;
 
 with Chat_Completions_API.Types;
+with VSS.String_Vectors;
 
 package Chat_Completions_API.Chats is
 
@@ -34,6 +35,8 @@ package Chat_Completions_API.Chats is
         (Is_Set => False);
       Presence_Penalty      : Chat_Completions_API.Types.Optional_Float_64 :=
         (Is_Set => False);
+      Stop                  : VSS.String_Vectors.Virtual_String_Vector :=
+        VSS.String_Vectors.Empty_Virtual_String_Vector;
       Response_Format       :
         Chat_Completions_API
           .Types
@@ -62,6 +65,8 @@ package Chat_Completions_API.Chats is
    --  * @param Seed - Best-effort deterministic sampling seed
    --  * @param Frequency_Penalty - Penalize tokens by existing frequency
    --  * @param Presence_Penalty - Penalize tokens that already appeared
+   --  * @param Stop - Up to 4 sequences where the API will stop generating
+   --    further tokens
    --  * @param Response_Format - Plain text, JSON mode or a JSON Schema
    --  * @param Logprobs - Whether to return output token log probabilities
    --  * @param Top_Logprobs - Number of most likely tokens to report per

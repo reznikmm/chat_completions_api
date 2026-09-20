@@ -29,6 +29,28 @@
 - `alire.toml` — Alire crate manifest
 - `LICENSES/` — License information
 
+## Regenerating `specs/schema.json`
+
+`specs/schema.json` is trimmed down from the upstream OpenAI OpenAPI spec.
+To refresh it from the latest upstream spec:
+
+```sh
+cd specs
+make fetch
+```
+
+This downloads `openapi.yaml` from the OpenAI OpenAPI repository, converts
+it to JSON, and reduces it via `fix.jq` to just the schemas this library
+needs, writing the result to `schema.json`.
+
+After updating `schema.json`, regenerate `source/generated` from it (this
+step requires the `gen_json` tool):
+
+```sh
+cd specs
+make generate
+```
+
 ## Installation
 
 To install the library using the Alire package manager:

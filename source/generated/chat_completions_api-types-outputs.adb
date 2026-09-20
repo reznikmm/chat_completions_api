@@ -273,6 +273,14 @@ package body Chat_Completions_API.Types.Outputs is
          Handler.Key_Name ("stream");
          Handler.Boolean_Value (Value.stream);
       end if;
+      if not Value.stop.Is_Empty then
+         Handler.Key_Name ("stop");
+         Handler.Start_Array;
+         for J in 1 .. Value.stop.Length loop
+            Handler.String_Value (Value.stop (J));
+         end loop;
+         Handler.End_Array;
+      end if;
       if Value.logprobs then
          Handler.Key_Name ("logprobs");
          Handler.Boolean_Value (Value.logprobs);

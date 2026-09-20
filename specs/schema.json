@@ -58,6 +58,14 @@
               "nullable": true,
               "default": false
             },
+            "stop": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "maxItems": 4,
+              "description": "Up to 4 sequences where the API will stop generating further tokens. The\nreturned text will not contain the stop sequence.\n"
+            },
             "logprobs": {
               "description": "Whether to return log probabilities of the output tokens or not. If true,\nreturns the log probabilities of each output token returned in the\n`content` of `message`.\n",
               "type": "boolean",
