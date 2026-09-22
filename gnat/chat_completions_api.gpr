@@ -4,6 +4,7 @@
 ------------------------------------------------------------------
 
 with "../config/chat_completions_api_config.gpr";
+with "vss_xml.gpr";  --  Make it wotk with vss-extra repo pin
 project Chat_Completions_API is
 
    for Library_Name use "chat_completions_api";
